@@ -245,7 +245,7 @@ def couplet(x, y, lines):
 			break
 		else:
 			over = line_sylcount(line_1) + sylcount(end_word_1) - 10
-			for i in line_1:
+			for i in reversed(line_1):
 				if sylcount(i) <= over:
 					line_1.remove(i)
 					break
@@ -256,7 +256,7 @@ def couplet(x, y, lines):
 			break
 		else:
 			over = line_sylcount(line_2) + sylcount(end_word_2) - 10
-			for i in line_2:
+			for i in reversed(line_2):
 				if sylcount(i) <= over:
 					line_2.remove(i)
 					break
