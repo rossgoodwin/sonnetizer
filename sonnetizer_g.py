@@ -12,7 +12,7 @@ d = cmudict.dict()
 
 banned_end_words = ['the', 'a', 'an', 'at', 'been', 'in', 'of', 'to', 'by', 'my',
 					'too', 'not', 'and', 'but', 'or', 'than', 'then', 'no', 'o',
-					'for', 'so', 'which', 'their', 'on', 'your', 'as', 'has',
+                    'for', 'so', 'which', 'their', 'on', 'your', 'as', 'has',
 					'what', 'is', 'nor']
 
 print "importing source text..."
@@ -201,12 +201,23 @@ def generate():
 
 def sylcount(s):
 	try:
-		sj = ''.join(d[s][0])
-		sl = re.split('0|1|2', sj)
+		d[s]
 	except KeyError:
 		return None
 	else:
-		return len(sl) - 1
+		if len(d[s]) <= 1:
+			sj = ''.join(d[s][0])
+			sl = re.split('0|1|2', sj)
+			return len(sl) - 1
+		else:
+			sj0 = ''.join(d[s][0])
+			sl0 = re.split('0|1|2', sj0)
+			sj1 = ''.join(d[s][1])
+			sl1 = re.split('0|1|2', sj1)
+			if len(sl1) < len(sl0):
+				return len(sl1) - 1
+			else:
+				return len(sl0) - 1
 		
 		
 def line_sylcount(line):
@@ -239,7 +250,7 @@ def couplet(x, y, lines):
 					line_1.remove(i)
 					break
 				else:
-					pass
+					continue
 	for _ in range(9):
 		if line_sylcount(line_2) + sylcount(end_word_2) == 10:
 			break
@@ -250,7 +261,7 @@ def couplet(x, y, lines):
 					line_2.remove(i)
 					break
 				else:
-					pass
+					continue
 	line_1.append(end_word_1)
 	line_2.append(end_word_2)
 	return [line_1, line_2]
@@ -272,14 +283,14 @@ def couplet_checker():
 		  line_sylcount(c5[0]) != 10 or line_sylcount(c5[1]) != 10 or \
 		  line_sylcount(c6[0]) != 10 or line_sylcount(c6[1]) != 10 or \
 		  line_sylcount(c7[0]) != 10 or line_sylcount(c7[1]) != 10:
-		lines = generate()
-		c1 = couplet(0, 2, lines)
-		c2 = couplet(1, 3, lines)
-		c3 = couplet(4, 6, lines)
-		c4 = couplet(5, 7, lines)
-		c5 = couplet(8, 10, lines)
-		c6 = couplet(9, 11, lines)
-		c7 = couplet(12, 13, lines)
+		lines1 = generate()
+		c1 = couplet(0, 2, lines1)
+		c2 = couplet(1, 3, lines1)
+		c3 = couplet(4, 6, lines1)
+		c4 = couplet(5, 7, lines1)
+		c5 = couplet(8, 10, lines1)
+		c6 = couplet(9, 11, lines1)
+		c7 = couplet(12, 13, lines1)
 	return [c1[0], c2[0], c1[1], c2[1], c3[0], c4[0], c3[1], c4[1],
 			c5[0], c6[0], c5[1], c6[1], c7[0], c7[1]]
 
