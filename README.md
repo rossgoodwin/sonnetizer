@@ -1,4 +1,4 @@
-sonnetizer
+Sonnetizer
 ==========
 
 Sonnetizer is a program written by [Ross Goodwin](http://rossgoodwin.com) that generates 14-line rhyming sonnets from any text corpus. It requires Python 2.7, nltk, numpy, and some other standard Python modules to run properly.
