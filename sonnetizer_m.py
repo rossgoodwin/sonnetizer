@@ -14,7 +14,7 @@ d = cmudict.dict()
 banned_end_words = ['the', 'a', 'an', 'at', 'been', 'in', 'of', 'to', 'by', 'my',
 					'too', 'not', 'and', 'but', 'or', 'than', 'then', 'no', 'o',
                     'for', 'so', 'which', 'their', 'on', 'your', 'as', 'has',
-					'what', 'is', 'nor']
+					'what', 'is', 'nor', 'i']
 
 print "importing source text..."
 f = open(book)
@@ -93,97 +93,7 @@ def line_sylcount(line):
 	for word in line:
 		count += sylcount(word)
 	return count
-
-
-def strip_numbers(x):
-	xj = '.'.join(x)
-	xl = re.split('0|1|2', xj)
-	xjx = ''.join(xl)
-	xlx = xjx.split('.')
-	return xlx
 	
-	
-def ends_in_vowel(pl):
-	if 'A' in pl[-1:][0] or 'E' in pl[-1:][0] or \
-	'I' in pl[-1:][0] or 'O' in pl[-1:][0] or \
-	'U' in pl[-1:][0] or 'Y' in pl[-1:][0]:
-		return True	
-	else:
-		return False
-
-
-def contains_vowel(pl, n):
-	if 'A' in pl[n][0] or 'E' in pl[n][0] or \
-	'I' in pl[n][0] or 'O' in pl[n][0] or \
-	'U' in pl[n][0] or 'Y' in pl[n][0]:
-		return True	
-	else:
-		return False
-
-
-def rhyme_finder(word):
-	rhyming_words = []
-	pron = strip_numbers(d[word][0])
-	if len(pron) == 1:
-		for (x, y) in word_list_u:
-			ps = strip_numbers(y)
-			if ps[-1] == pron[0]:
-				rhyming_words.append(x)
-			else:
-				pass
-	elif len(pron) == 2:
-		if ends_in_vowel(pron):
-			for (x, y) in word_list_u:
-				ps = strip_numbers(y)
-				if ps[-1] == pron[-1]:
-					rhyming_words.append(x)
-				else:
-					pass
-		else:
-			for (x, y) in word_list_u:
-				ps = strip_numbers(y)
-				if ps[-2:] == pron:
-					rhyming_words.append(x)
-				else:
-					pass
-	elif len(pron) >= 3:
-		if ends_in_vowel(pron):
-			for (x, y) in word_list_u:
-				ps = strip_numbers(y)
-				if ps[-1] == pron[-1]:
-					rhyming_words.append(x)
-				else:
-					pass
-		else:
-			if contains_vowel(pron, -2):
-				for (x, y) in word_list_u:
-					ps = strip_numbers(y)
-					if ps[-2:] == pron[-2:]:
-						rhyming_words.append(x)
-					else:
-						pass
-			elif contains_vowel(pron, -3):
-				for (x, y) in word_list_u:
-					ps = strip_numbers(y)
-					if ps[-3:] == pron[-3:]:
-						rhyming_words.append(x)
-					else:
-						pass
-			elif contains_vowel(pron, -4):
-				for (x, y) in word_list_u:
-					ps = strip_numbers(y)
-					if ps[-4:] == pron[-4:]:
-						rhyming_words.append(x)
-					else:
-						pass
-			else:
-				pass
-	else:
-		pass
-	rw = [i for i in rhyming_words if not i == word]
-	rw2 = [j for j in rw if not j in banned_end_words]
-	return rw2
-
 
 def meter(word):
 	pron = d[word]
@@ -317,7 +227,93 @@ def meter(word):
 					m.append('s')
 				if i == 2:
 					m.append('s')		
-	return m	
+	return m
+
+
+def strip_numbers(x):
+	xj = '.'.join(x)
+	xl = re.split('0|1|2', xj)
+	xjx = ''.join(xl)
+	xlx = xjx.split('.')
+	return xlx
+	
+
+def last_stressed_vowel(word):
+	if len(d[word]) <= 1:
+		pron = d[word][0]
+	else:
+		p0 = d[word][0]
+		p1 = d[word][1]
+		sj0 = ''.join(p0)
+		sl0 = re.split('0|1|2', sj0)
+		sj1 = ''.join(p1)
+		sl1 = re.split('0|1|2', sj1)
+		if len(sl1) < len(sl0):
+			pron = p1
+		else:
+			pron = p0
+	mtr = meter(word)
+	vowel_index = []
+	if len(mtr) == 1:
+		lsv = -1
+	elif mtr[-1] == 's' or mtr[-1] == 'x':
+		lsv = -1
+	elif mtr[-2] == 's' or mtr[-3] == 'x':
+		lsv = -2
+	elif mtr[-3] == 's' or mtr[-3] == 'x':
+		lsv = -3
+	elif mtr[-4] == 's' or mtr[-4] == 'x':
+		lsv = -4
+	elif mtr[-5] == 's' or mtr[-5] == 'x':
+		lsv = -5
+	elif mtr[-6] == 's' or mtr[-6] == 'x':
+		lsv = -6
+	elif mtr[-7] == 's' or mtr[-7] == 'x':
+		lsv = -7
+	elif mtr[-8] == 's' or mtr[-8] == 'x':
+		lsv = -8
+	elif mtr[-9] == 's' or mtr[-9] == 'x':
+		lsv = -9
+	elif mtr[-10] == 's' or mtr[-10] == 'x':
+		lsv = -10
+	else:
+		lsv = -1
+	for i in pron:
+		if '0' in i or '1' in i or '2' in i:
+			vowel_index.append(pron.index(i))
+		else:
+			continue
+	return vowel_index[lsv]
+
+
+def rhyme_finder(word):
+	rhyming_words = []
+	if len(d[word]) <= 1:
+		pron = d[word][0]
+	else:
+		p0 = d[word][0]
+		p1 = d[word][1]
+		sj0 = ''.join(p0)
+		sl0 = re.split('0|1|2', sj0)
+		sj1 = ''.join(p1)
+		sl1 = re.split('0|1|2', sj1)
+		if len(sl1) < len(sl0):
+			pron = p1
+		else:
+			pron = p0
+	pron = strip_numbers(pron)
+	lsv = last_stressed_vowel(word)
+	rhyme_part = pron[lsv:]
+	lrp = len(rhyme_part) * -1
+	for (x, y) in word_list_u:
+		ps = strip_numbers(y)
+		if ps[lrp:] == rhyme_part and ps[lrp-1:] != pron[lsv-1:]:
+			rhyming_words.append(x)
+		else:
+			pass
+	rw = [i for i in rhyming_words if not i == word]
+	rw2 = [j for j in rw if not j in banned_end_words]
+	return rw2
 
 
 print "building content model..."
@@ -773,11 +769,12 @@ def sonnetizer():
 	l14 = ' '.join(s[13])
 	sonnet = [l1, l2, l3, l4, l5, l6, l7, l8, 
 			  l9, l10, l11, l12, l13, l14]
-	return '\n' + '\n'.join(sonnet) + '\n'
+	return '\n'.join(sonnet) + '\n' + '\n'
 
 
-print "assembling sonnets..."		
-for _ in range(10):
+print "assembling sonnets...\n\n"	
+for i in range(10):
+	print str(i + 1) + '.'
 	print sonnetizer()
 	
 		
