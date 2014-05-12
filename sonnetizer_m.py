@@ -324,6 +324,42 @@ content_model = nltk.NgramModel(3, vw, estimator=estimator)
 def sw():
 	sw1 = random.randint(0, len(vw) - 1)
 	return [vw[sw1]]
+	
+	
+def generate_word(prior_words):
+	starting_words = sw()
+	word_y = content_model.generate(1, starting_words + prior_words)
+	word_y = word_y[-1]
+	m_word_y = meter(word_y)
+	m_word_x = meter(prior_words[-1])
+	if m_word_x == ['x'] or m_word_x == ['x', 'x'] or m_word_x == ['x', 'x', 'x'] or \
+	   m_word_x == ['x', 'x', 'x', 'x'] or m_word_x == ['x', 'x', 'x', 'x', 'x'] or \
+	   m_word_x == ['x', 'x', 'x', 'x', 'x', 'x']:
+		pass
+	elif m_word_x[-1] == 'u' or m_word_x[-2:] == ['s', 'x'] or m_word_x[-3:] == ['u', 'x', 'x'] or \
+		 m_word_x[-4:] == ['s', 'x', 'x', 'x'] or m_word_x[-5:] == ['u', 'x', 'x', 'x', 'x'] or \
+		 m_word_x[-6:] == ['s', 'x', 'x', 'x', 'x', 'x']:
+		for _ in range(10):
+			if m_word_y[0] == 's' or m_word_y[0] == 'x':
+				break
+			else:
+				starting_words = sw()
+				word_y = content_model.generate(1, starting_words + [prior_words[-1]])
+				word_y = word_y[-1]
+				m_word_y = meter(word_y)
+	elif m_word_x[-1] == 's' or m_word_x[-2:] == ['u', 'x'] or m_word_x[-3:] == ['s', 'x', 'x'] or \
+		 m_word_x[-4:] == ['u', 'x', 'x', 'x'] or m_word_x[-5:] == ['s', 'x', 'x', 'x', 'x'] or \
+		 m_word_x[-6:] == ['u', 'x', 'x', 'x', 'x', 'x']:
+		for _ in range(10):
+			if m_word_y[0] == 'u' or m_word_y[0] == 'x':
+				break
+			else:
+				starting_words = sw()
+				word_y = content_model.generate(1, starting_words + [prior_words[-1]])
+				word_y = word_y[-1]
+				m_word_y = meter(word_y)
+	return word_y
+	
 
 
 def generate_line(x):
@@ -342,35 +378,7 @@ def generate_line(x):
 		line.append(word_1)
 		count += sylcount(word_1)
 		
-		word_2 = content_model.generate(1, starting_words + [word_1])
-		word_2 = word_2[-1]
-		m_word_2 = meter(word_2)
-		if m_word_1 == ['x'] or m_word_1 == ['x', 'x'] or m_word_1 == ['x', 'x', 'x'] or \
-		   m_word_1 == ['x', 'x', 'x', 'x'] or m_word_1 == ['x', 'x', 'x', 'x', 'x'] or \
-		   m_word_1 == ['x', 'x', 'x', 'x', 'x', 'x']:
-			pass
-		elif m_word_1[-1] == 'u' or m_word_1[-2:] == ['s', 'x'] or m_word_1[-3:] == ['u', 'x', 'x'] or \
-			 m_word_1[-4:] == ['s', 'x', 'x', 'x'] or m_word_1[-5:] == ['u', 'x', 'x', 'x', 'x'] or \
-			 m_word_1[-6:] == ['s', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_2[0] == 's' or m_word_2[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_2 = content_model.generate(1, starting_words + [word_1])
-					word_2 = word_2[-1]
-					m_word_2 = meter(word_2)
-		elif m_word_1[-1] == 's' or m_word_1[-2:] == ['u', 'x'] or m_word_1[-3:] == ['s', 'x', 'x'] or \
-			 m_word_1[-4:] == ['u', 'x', 'x', 'x'] or m_word_1[-5:] == ['s', 'x', 'x', 'x', 'x'] or \
-			 m_word_1[-6:] == ['u', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_2[0] == 'u' or m_word_2[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_2 = content_model.generate(1, starting_words + [word_1])
-					word_2 = word_2[-1]
-					m_word_2 = meter(word_2)
+		word_2 = generate_word([word_1])
 		line.append(word_2)
 		count += sylcount(word_2)
 		if count >= 10:
@@ -378,35 +386,7 @@ def generate_line(x):
 		else:
 			pass
 		
-		word_3 = content_model.generate(1, starting_words + [word_1, word_2])
-		word_3 = word_3[-1]
-		m_word_3 = meter(word_3)
-		if m_word_2 == ['x'] or m_word_2 == ['x', 'x'] or m_word_2 == ['x', 'x', 'x'] or \
-		   m_word_2 == ['x', 'x', 'x', 'x'] or m_word_2 == ['x', 'x', 'x', 'x', 'x'] or \
-		   m_word_2 == ['x', 'x', 'x', 'x', 'x', 'x']:
-			pass
-		elif m_word_2[-1] == 'u' or m_word_2[-2:] == ['s', 'x'] or m_word_2[-3:] == ['u', 'x', 'x'] or \
-			 m_word_2[-4:] == ['s', 'x', 'x', 'x'] or m_word_2[-5:] == ['u', 'x', 'x', 'x', 'x'] or \
-			 m_word_2[-6:] == ['s', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_3[0] == 's' or m_word_3[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_3 = content_model.generate(1, starting_words + [word_2])
-					word_3 = word_3[-1]
-					m_word_3 = meter(word_3)
-		elif m_word_2[-1] == 's' or m_word_2[-2:] == ['u', 'x'] or m_word_2[-3:] == ['s', 'x', 'x'] or \
-			 m_word_2[-4:] == ['u', 'x', 'x', 'x'] or m_word_2[-5:] == ['s', 'x', 'x', 'x', 'x'] or \
-			 m_word_2[-6:] == ['u', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_3[0] == 'u' or m_word_3[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_3 = content_model.generate(1, starting_words + [word_2])
-					word_3 = word_3[-1]
-					m_word_3 = meter(word_3)
+		word_3 = generate_word([word_1, word_2])
 		line.append(word_3)
 		count += sylcount(word_3)
 		if count >= 10:
@@ -414,35 +394,7 @@ def generate_line(x):
 		else:
 			pass
 		
-		word_4 = content_model.generate(1, starting_words + [word_1, word_2, word_3])
-		word_4 = word_4[-1]
-		m_word_4 = meter(word_4)
-		if m_word_3 == ['x'] or m_word_3 == ['x', 'x'] or m_word_3 == ['x', 'x', 'x'] or \
-		   m_word_3 == ['x', 'x', 'x', 'x'] or m_word_3 == ['x', 'x', 'x', 'x', 'x'] or \
-		   m_word_3 == ['x', 'x', 'x', 'x', 'x', 'x']:
-			pass
-		elif m_word_3[-1] == 'u' or m_word_3[-2:] == ['s', 'x'] or m_word_3[-3:] == ['u', 'x', 'x'] or \
-			 m_word_3[-4:] == ['s', 'x', 'x', 'x'] or m_word_3[-5:] == ['u', 'x', 'x', 'x', 'x'] or \
-			 m_word_3[-6:] == ['s', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_4[0] == 's' or m_word_4[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_4 = content_model.generate(1, starting_words + [word_3])
-					word_4 = word_4[-1]
-					m_word_4 = meter(word_4)
-		elif m_word_3[-1] == 's' or m_word_3[-2:] == ['u', 'x'] or m_word_3[-3:] == ['s', 'x', 'x'] or \
-			 m_word_3[-4:] == ['u', 'x', 'x', 'x'] or m_word_3[-5:] == ['s', 'x', 'x', 'x', 'x'] or \
-			 m_word_3[-6:] == ['u', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_4[0] == 'u' or m_word_4[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_4 = content_model.generate(1, starting_words + [word_3])
-					word_4 = word_4[-1]
-					m_word_4 = meter(word_4)
+		word_4 = generate_word([word_1, word_2, word_3])
 		line.append(word_4)
 		count += sylcount(word_4)
 		if count >= 10:
@@ -450,35 +402,7 @@ def generate_line(x):
 		else:
 			pass
 		
-		word_5 = content_model.generate(1, starting_words + [word_1, word_2, word_3, word_4])
-		word_5 = word_5[-1]
-		m_word_5 = meter(word_5)
-		if m_word_4 == ['x'] or m_word_4 == ['x', 'x'] or m_word_4 == ['x', 'x', 'x'] or \
-		   m_word_4 == ['x', 'x', 'x', 'x'] or m_word_4 == ['x', 'x', 'x', 'x', 'x'] or \
-		   m_word_4 == ['x', 'x', 'x', 'x', 'x', 'x']:
-			pass
-		elif m_word_4[-1] == 'u' or m_word_4[-2:] == ['s', 'x'] or m_word_4[-3:] == ['u', 'x', 'x'] or \
-			 m_word_4[-4:] == ['s', 'x', 'x', 'x'] or m_word_4[-5:] == ['u', 'x', 'x', 'x', 'x'] or \
-			 m_word_4[-6:] == ['s', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_5[0] == 's' or m_word_5[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_5 = content_model.generate(1, starting_words + [word_4])
-					word_5 = word_5[-1]
-					m_word_5 = meter(word_5)
-		elif m_word_4[-1] == 's' or m_word_4[-2:] == ['u', 'x'] or m_word_4[-3:] == ['s', 'x', 'x'] or \
-			 m_word_4[-4:] == ['u', 'x', 'x', 'x'] or m_word_4[-5:] == ['s', 'x', 'x', 'x', 'x'] or \
-			 m_word_4[-6:] == ['u', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_5[0] == 'u' or m_word_5[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_5 = content_model.generate(1, starting_words + [word_4])
-					word_5 = word_5[-1]
-					m_word_5 = meter(word_5)
+		word_5 = generate_word([word_1, word_2, word_3, word_4])
 		line.append(word_5)
 		count += sylcount(word_5)
 		if count >= 10:
@@ -486,35 +410,7 @@ def generate_line(x):
 		else:
 			pass
 		
-		word_6 = content_model.generate(1, starting_words + [word_1, word_2, word_3, word_4, word_5])
-		word_6 = word_6[-1]
-		m_word_6 = meter(word_6)
-		if m_word_5 == ['x'] or m_word_5 == ['x', 'x'] or m_word_5 == ['x', 'x', 'x'] or \
-		   m_word_5 == ['x', 'x', 'x', 'x'] or m_word_5 == ['x', 'x', 'x', 'x', 'x'] or \
-		   m_word_5 == ['x', 'x', 'x', 'x', 'x', 'x']:
-			pass
-		elif m_word_5[-1] == 'u' or m_word_5[-2:] == ['s', 'x'] or m_word_5[-3:] == ['u', 'x', 'x'] or \
-			 m_word_5[-4:] == ['s', 'x', 'x', 'x'] or m_word_5[-5:] == ['u', 'x', 'x', 'x', 'x'] or \
-			 m_word_5[-6:] == ['s', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_6[0] == 's' or m_word_6[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_6 = content_model.generate(1, starting_words + [word_5])
-					word_6 = word_6[-1]
-					m_word_6 = meter(word_6)
-		elif m_word_5[-1] == 's' or m_word_5[-2:] == ['u', 'x'] or m_word_5[-3:] == ['s', 'x', 'x'] or \
-			 m_word_5[-4:] == ['u', 'x', 'x', 'x'] or m_word_5[-5:] == ['s', 'x', 'x', 'x', 'x'] or \
-			 m_word_5[-6:] == ['u', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_6[0] == 'u' or m_word_6[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_6 = content_model.generate(1, starting_words + [word_5])
-					word_6 = word_6[-1]
-					m_word_6 = meter(word_6)
+		word_6 = generate_word([word_1, word_2, word_3, word_4, word_5])
 		line.append(word_6)
 		count += sylcount(word_6)
 		if count >= 10:
@@ -522,35 +418,7 @@ def generate_line(x):
 		else:
 			pass
 					
-		word_7 = content_model.generate(1, starting_words + [word_1, word_2, word_3, word_4, word_5, word_6])
-		word_7 = word_7[-1]
-		m_word_7 = meter(word_7)
-		if m_word_6 == ['x'] or m_word_6 == ['x', 'x'] or m_word_6 == ['x', 'x', 'x'] or \
-		   m_word_6 == ['x', 'x', 'x', 'x'] or m_word_6 == ['x', 'x', 'x', 'x', 'x'] or \
-		   m_word_6 == ['x', 'x', 'x', 'x', 'x', 'x']:
-			pass
-		elif m_word_6[-1] == 'u' or m_word_6[-2:] == ['s', 'x'] or m_word_6[-3:] == ['u', 'x', 'x'] or \
-			 m_word_6[-4:] == ['s', 'x', 'x', 'x'] or m_word_6[-5:] == ['u', 'x', 'x', 'x', 'x'] or \
-			 m_word_6[-6:] == ['s', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_7[0] == 's' or m_word_7[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_7 = content_model.generate(1, starting_words + [word_6])
-					word_7 = word_7[-1]
-					m_word_7 = meter(word_7)
-		elif m_word_6[-1] == 's' or m_word_6[-2:] == ['u', 'x'] or m_word_6[-3:] == ['s', 'x', 'x'] or \
-			 m_word_6[-4:] == ['u', 'x', 'x', 'x'] or m_word_6[-5:] == ['s', 'x', 'x', 'x', 'x'] or \
-			 m_word_6[-6:] == ['u', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_7[0] == 'u' or m_word_7[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_7 = content_model.generate(1, starting_words + [word_6])
-					word_7 = word_7[-1]
-					m_word_7 = meter(word_7)
+		word_7 = generate_word([word_1, word_2, word_3, word_4, word_5, word_6])
 		line.append(word_7)
 		count += sylcount(word_7)
 		if count >= 10:
@@ -558,35 +426,7 @@ def generate_line(x):
 		else:
 			pass		
 		
-		word_8 = content_model.generate(1, starting_words + [word_1, word_2, word_3, word_4, word_5, word_6, word_7])
-		word_8 = word_8[-1]
-		m_word_8 = meter(word_8)
-		if m_word_7 == ['x'] or m_word_7 == ['x', 'x'] or m_word_7 == ['x', 'x', 'x'] or \
-		   m_word_7 == ['x', 'x', 'x', 'x'] or m_word_7 == ['x', 'x', 'x', 'x', 'x'] or \
-		   m_word_7 == ['x', 'x', 'x', 'x', 'x', 'x']:
-			pass
-		elif m_word_7[-1] == 'u' or m_word_7[-2:] == ['s', 'x'] or m_word_7[-3:] == ['u', 'x', 'x'] or \
-			 m_word_7[-4:] == ['s', 'x', 'x', 'x'] or m_word_7[-5:] == ['u', 'x', 'x', 'x', 'x'] or \
-			 m_word_7[-6:] == ['s', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_8[0] == 's' or m_word_8[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_8 = content_model.generate(1, starting_words + [word_7])
-					word_8 = word_8[-1]
-					m_word_8 = meter(word_8)
-		elif m_word_7[-1] == 's' or m_word_7[-2:] == ['u', 'x'] or m_word_7[-3:] == ['s', 'x', 'x'] or \
-			 m_word_7[-4:] == ['u', 'x', 'x', 'x'] or m_word_7[-5:] == ['s', 'x', 'x', 'x', 'x'] or \
-			 m_word_7[-6:] == ['u', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_8[0] == 'u' or m_word_8[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_8 = content_model.generate(1, starting_words + [word_7])
-					word_8 = word_8[-1]
-					m_word_8 = meter(word_8)
+		word_8 = generate_word([word_1, word_2, word_3, word_4, word_5, word_6, word_7])
 		line.append(word_8)
 		count += sylcount(word_8)
 		if count >= 10:
@@ -594,35 +434,7 @@ def generate_line(x):
 		else:
 			pass		
 		
-		word_9 = content_model.generate(1, starting_words + [word_1, word_2, word_3, word_4, word_5, word_6, word_7, word_8])
-		word_9 = word_9[-1]
-		m_word_9 = meter(word_9)
-		if m_word_8 == ['x'] or m_word_8 == ['x', 'x'] or m_word_8 == ['x', 'x', 'x'] or \
-		   m_word_8 == ['x', 'x', 'x', 'x'] or m_word_8 == ['x', 'x', 'x', 'x', 'x'] or \
-		   m_word_8 == ['x', 'x', 'x', 'x', 'x', 'x']:
-			pass
-		elif m_word_8[-1] == 'u' or m_word_8[-2:] == ['s', 'x'] or m_word_8[-3:] == ['u', 'x', 'x'] or \
-			 m_word_8[-4:] == ['s', 'x', 'x', 'x'] or m_word_8[-5:] == ['u', 'x', 'x', 'x', 'x'] or \
-			 m_word_7[-6:] == ['s', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_9[0] == 's' or m_word_9[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_9 = content_model.generate(1, starting_words + [word_8])
-					word_9 = word_9[-1]
-					m_word_9 = meter(word_9)
-		elif m_word_8[-1] == 's' or m_word_8[-2:] == ['u', 'x'] or m_word_8[-3:] == ['s', 'x', 'x'] or \
-			 m_word_8[-4:] == ['u', 'x', 'x', 'x'] or m_word_8[-5:] == ['s', 'x', 'x', 'x', 'x'] or \
-			 m_word_8[-6:] == ['u', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_9[0] == 'u' or m_word_9[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_9 = content_model.generate(1, starting_words + [word_8])
-					word_9 = word_9[-1]
-					m_word_9 = meter(word_9)
+		word_9 = generate_word([word_1, word_2, word_3, word_4, word_5, word_6, word_7, word_8])
 		line.append(word_9)
 		count += sylcount(word_9)
 		if count >= 10:
@@ -630,35 +442,7 @@ def generate_line(x):
 		else:
 			pass		
 		
-		word_10 = content_model.generate(1, starting_words + [word_1, word_2, word_3, word_4, word_5, word_6, word_7, word_8, word_9])
-		word_10 = word_10[-1]
-		m_word_10 = meter(word_10)
-		if m_word_9 == ['x'] or m_word_9 == ['x', 'x'] or m_word_9 == ['x', 'x', 'x'] or \
-		   m_word_9 == ['x', 'x', 'x', 'x'] or m_word_9 == ['x', 'x', 'x', 'x', 'x'] or \
-		   m_word_9 == ['x', 'x', 'x', 'x', 'x', 'x']:
-			pass
-		elif m_word_9[-1] == 'u' or m_word_9[-2:] == ['s', 'x'] or m_word_9[-3:] == ['u', 'x', 'x'] or \
-			 m_word_9[-4:] == ['s', 'x', 'x', 'x'] or m_word_9[-5:] == ['u', 'x', 'x', 'x', 'x'] or \
-			 m_word_9[-6:] == ['s', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_10[0] == 's' or m_word_10[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_10 = content_model.generate(1, starting_words + [word_9])
-					word_10 = word_10[-1]
-					m_word_10 = meter(word_10)
-		elif m_word_9[-1] == 's' or m_word_9[-2:] == ['u', 'x'] or m_word_9[-3:] == ['s', 'x', 'x'] or \
-			 m_word_9[-4:] == ['u', 'x', 'x', 'x'] or m_word_9[-5:] == ['s', 'x', 'x', 'x', 'x'] or \
-			 m_word_9[-6:] == ['u', 'x', 'x', 'x', 'x', 'x']:
-			for _ in range(10):
-				if m_word_10[0] == 'u' or m_word_10[0] == 'x':
-					break
-				else:
-					starting_words = sw()
-					word_10 = content_model.generate(1, starting_words + [word_9])
-					word_10 = word_10[-1]
-					m_word_10 = meter(word_10)
+		word_10 = generate_word([word_1, word_2, word_3, word_4, word_5, word_6, word_7, word_8, word_9])
 		line.append(word_10)
 		break
 		
