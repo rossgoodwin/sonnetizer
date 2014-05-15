@@ -12,9 +12,9 @@ e = cmudict.entries()
 d = cmudict.dict()
 
 banned_end_words = ['the', 'a', 'an', 'at', 'been', 'in', 'of', 'to', 'by', 'my',
-					'too', 'not', 'and', 'but', 'or', 'than', 'then', 'no', 'o',
+                    'too', 'not', 'and', 'but', 'or', 'than', 'then', 'no', 'o',
                     'for', 'so', 'which', 'their', 'on', 'your', 'as', 'has',
-					'what', 'is', 'nor']
+                    'what', 'is', 'nor']
 
 print "importing source text..."
 f = open(book)
@@ -354,8 +354,8 @@ def generate():
 	line_14 = content_model.generate(9, line_13)
 	line_14 = line_14[-9:]
 	lines = [line_1, line_2, line_3, line_4, line_5, line_6,
-			 line_7, line_8, line_9, line_10, line_11, line_12,
-			 line_13, line_14]
+                 line_7, line_8, line_9, line_10, line_11, line_12,
+                 line_13, line_14]
 	return lines
 
 
@@ -424,7 +424,7 @@ def couplet_checker():
 		c6 = couplet(9, 11, lines1)
 		c7 = couplet(12, 13, lines1)
 	return [c1[0], c2[0], c1[1], c2[1], c3[0], c4[0], c3[1], c4[1],
-			c5[0], c6[0], c5[1], c6[1], c7[0], c7[1]]
+                c5[0], c6[0], c5[1], c6[1], c7[0], c7[1]]
 
 
 def sonnetizer():
@@ -444,7 +444,7 @@ def sonnetizer():
 	l13 = ' '.join(s[12])
 	l14 = ' '.join(s[13])
 	sonnet = [l1, l2, l3, l4, l5, l6, l7, l8, 
-			  l9, l10, l11, l12, l13, l14]
+                  l9, l10, l11, l12, l13, l14]
 	return '\n'.join(sonnet) + '\n' + '\n'
 
 

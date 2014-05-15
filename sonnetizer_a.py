@@ -334,8 +334,8 @@ def generate():
 	line_13 = content_model.generate(10, line_12[-2:])
 	line_14 = content_model.generate(9, line_13[-2:])
 	lines = [line_1, line_2, line_3, line_4, line_5, line_6,
-			 line_7, line_8, line_9, line_10, line_11, line_12,
-			 line_13, line_14]
+                 line_7, line_8, line_9, line_10, line_11, line_12,
+                 line_13, line_14]
 	for i in lines:
 		i.remove(i[-1])
 		i.remove(i[-1])
@@ -433,7 +433,7 @@ def write():
 	line_14a = nltk.word_tokenize(line_14a)
 	
 	return [line_1a, line_2a, line_3a, line_4a, line_5a, line_6a, line_7a, line_8a,
-			line_9a, line_10a, line_11a, line_12a, line_13a, line_14a]
+                line_9a, line_10a, line_11a, line_12a, line_13a, line_14a]
 
 
 def couplet(x, y, lines):
@@ -486,12 +486,12 @@ def couplet_checker():
 	c6 = couplet(9, 11, lines)
 	c7 = couplet(12, 13, lines)
 	while line_sylcount(c1[0]) != 10 or line_sylcount(c1[1]) != 10 or \
-		  line_sylcount(c2[0]) != 10 or line_sylcount(c2[1]) != 10 or \
-		  line_sylcount(c3[0]) != 10 or line_sylcount(c3[1]) != 10 or \
-		  line_sylcount(c4[0]) != 10 or line_sylcount(c4[1]) != 10 or \
-		  line_sylcount(c5[0]) != 10 or line_sylcount(c5[1]) != 10 or \
-		  line_sylcount(c6[0]) != 10 or line_sylcount(c6[1]) != 10 or \
-		  line_sylcount(c7[0]) != 10 or line_sylcount(c7[1]) != 10:
+              line_sylcount(c2[0]) != 10 or line_sylcount(c2[1]) != 10 or \
+              line_sylcount(c3[0]) != 10 or line_sylcount(c3[1]) != 10 or \
+              line_sylcount(c4[0]) != 10 or line_sylcount(c4[1]) != 10 or \
+              line_sylcount(c5[0]) != 10 or line_sylcount(c5[1]) != 10 or \
+              line_sylcount(c6[0]) != 10 or line_sylcount(c6[1]) != 10 or \
+              line_sylcount(c7[0]) != 10 or line_sylcount(c7[1]) != 10:
 		lines = generate()
 		c1 = couplet(0, 2, lines)
 		c2 = couplet(1, 3, lines)
@@ -521,7 +521,7 @@ def sonnetizer():
 	l13 = ' '.join(s[12])
 	l14 = ' '.join(s[13])
 	sonnet = [l1, l2, l3, l4, l5, l6, l7, l8, 
-			  l9, l10, l11, l12, l13, l14]
+                  l9, l10, l11, l12, l13, l14]
 	return '\n' + '\n'.join(sonnet) + '\n'
 
 sonnet = sonnetizer()

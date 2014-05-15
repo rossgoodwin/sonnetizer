@@ -11,10 +11,9 @@ script, book = argv
 e = cmudict.entries()
 d = cmudict.dict()
 
-banned_end_words = ['the', 'a', 'an', 'at', 'been', 'in', 'of', 'to', 'by', 'my',
-					'too', 'not', 'and', 'but', 'or', 'than', 'then', 'no', 'o',
-                    'for', 'so', 'which', 'their', 'on', 'your', 'as', 'has',
-					'what', 'is', 'nor', 'i']
+banned_end_words = ['the', 'a', 'an', 'at', 'been', 'in', 'of', 'to', 'by', 'my', 'too', 'not', 
+                    'and', 'but', 'or', 'than', 'then', 'no', 'o', 'for', 'so', 'which', 'their', 
+                    'on', 'your', 'as', 'has', 'what', 'is', 'nor', 'i']
 
 print "importing source text..."
 f = open(book)
@@ -337,8 +336,8 @@ def generate_word(prior_words):
 	   m_word_x == ['x', 'x', 'x', 'x', 'x', 'x']:
 		pass
 	elif m_word_x[-1] == 'u' or m_word_x[-2:] == ['s', 'x'] or m_word_x[-3:] == ['u', 'x', 'x'] or \
-		 m_word_x[-4:] == ['s', 'x', 'x', 'x'] or m_word_x[-5:] == ['u', 'x', 'x', 'x', 'x'] or \
-		 m_word_x[-6:] == ['s', 'x', 'x', 'x', 'x', 'x']:
+             m_word_x[-4:] == ['s', 'x', 'x', 'x'] or m_word_x[-5:] == ['u', 'x', 'x', 'x', 'x'] or \
+             m_word_x[-6:] == ['s', 'x', 'x', 'x', 'x', 'x']:
 		for _ in range(10):
 			if m_word_y[0] == 's' or m_word_y[0] == 'x':
 				break
@@ -348,8 +347,8 @@ def generate_word(prior_words):
 				word_y = word_y[-1]
 				m_word_y = meter(word_y)
 	elif m_word_x[-1] == 's' or m_word_x[-2:] == ['u', 'x'] or m_word_x[-3:] == ['s', 'x', 'x'] or \
-		 m_word_x[-4:] == ['u', 'x', 'x', 'x'] or m_word_x[-5:] == ['s', 'x', 'x', 'x', 'x'] or \
-		 m_word_x[-6:] == ['u', 'x', 'x', 'x', 'x', 'x']:
+             m_word_x[-4:] == ['u', 'x', 'x', 'x'] or m_word_x[-5:] == ['s', 'x', 'x', 'x', 'x'] or \
+             m_word_x[-6:] == ['u', 'x', 'x', 'x', 'x', 'x']:
 		for _ in range(10):
 			if m_word_y[0] == 'u' or m_word_y[0] == 'x':
 				break
@@ -532,7 +531,7 @@ def couplet_checker():
 		c6 = couplet(9, 11, lines)
 		c7 = couplet(12, 13, lines)
 	return [c1[0], c2[0], c1[1], c2[1], c3[0], c4[0], c3[1], c4[1],
-			c5[0], c6[0], c5[1], c6[1], c7[0], c7[1]]
+                c5[0], c6[0], c5[1], c6[1], c7[0], c7[1]]
 
 
 def sonnetizer():
@@ -552,7 +551,7 @@ def sonnetizer():
 	l13 = ' '.join(s[12])
 	l14 = ' '.join(s[13])
 	sonnet = [l1, l2, l3, l4, l5, l6, l7, l8, 
-			  l9, l10, l11, l12, l13, l14]
+                  l9, l10, l11, l12, l13, l14]
 	return '\n'.join(sonnet) + '\n' + '\n'
 
 
