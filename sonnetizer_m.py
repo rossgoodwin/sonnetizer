@@ -2,6 +2,7 @@ from sys import argv
 import random
 import re
 import nltk
+import roman
 import operator
 from nltk.corpus import cmudict
 from nltk.probability import LidstoneProbDist
@@ -552,12 +553,12 @@ def sonnetizer():
 	l14 = ' '.join(s[13])
 	sonnet = [l1, l2, l3, l4, l5, l6, l7, l8, 
                   l9, l10, l11, l12, l13, l14]
-	return '\n'.join(sonnet) + '\n' + '\n'
+	return '\n'.join(sonnet) + '\n\n'
 
 
-print "assembling sonnets...\n\n"	
+print "assembling sonnets...\n\n"
 for i in range(10):
-	print str(i + 1) + '.'
-	print sonnetizer()
+    print roman.toRoman(i+1) + '.'
+    print sonnetizer()
 	
 		
